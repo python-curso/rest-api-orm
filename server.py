@@ -1,29 +1,15 @@
 # -*- coding: utf-8 -*-
 import os
-import base64
 from flask import Flask, request, jsonify, make_response
 from flask_restful import Resource, Api
 from json import dumps
-from werkzeug.utils import secure_filename
 from flask_cors import CORS, cross_origin
 from modal import db, User, app, users_schema, user_schema
 from flask_marshmallow import Marshmallow
 
-UPLOAD_FOLDER = 'folder'
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-
 CORS(app)
 api = Api(app)
-
 ma = Marshmallow(app)
-
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 class Users(Resource):
     def get(self):
